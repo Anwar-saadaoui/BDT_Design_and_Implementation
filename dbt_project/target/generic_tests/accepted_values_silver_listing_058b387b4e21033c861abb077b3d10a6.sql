@@ -1,0 +1,1 @@
+{{ test_accepted_values(column_name="energy_rating", model=get_where_subquery(ref('silver_listings')), values=["A","B","C","D","E","F","G"]) }}{{ config({"meta":{},"severity":"WARN","tags":[]}) }}

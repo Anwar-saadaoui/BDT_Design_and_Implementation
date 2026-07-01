@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: silver_listings
+    description: "Cleaned real estate listings from Bronze layer"
+    columns:
+      - name: listing_id
+        description: "Unique identifier of the listing"
+        tests:
+          - unique
+          - not_null
+
+      - name: property_type
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['apartment', 'house', 'villa', 'studio', 'duplex', 'penthouse', 'unknown']
+
+      - name: price
+        tests:
+          - not_null
+
+      - name: surface_m2
+        tests:
+          - not_null
+
+      - name: condition
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['new', 'good', 'renovated', 'old', 'unknown']
+
+      - name: energy_rating
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+              config:
+                severity: warn
+
+      - name: price_per_m2
+      - name: property_age

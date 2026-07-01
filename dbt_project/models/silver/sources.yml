@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: bronze
+    database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
+    schema: BRONZE
+    tables:
+      - name: RAW_LISTINGS
+        description: "Raw real estate listings, loaded as-is from CSV (all columns as STRING)"
+        columns:
+          - name: listing_id
+            description: "Unique identifier of the ad"
+          - name: LOAD_TIMESTAMP
+            description: "Metadata column - date/time the row was loaded into Bronze"

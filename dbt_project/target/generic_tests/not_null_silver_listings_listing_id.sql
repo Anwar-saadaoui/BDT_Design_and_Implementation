@@ -1,0 +1,1 @@
+{{ test_not_null(column_name="listing_id", model=get_where_subquery(ref('silver_listings'))) }}

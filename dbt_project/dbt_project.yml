@@ -1,0 +1,25 @@
+name: 'real_estate_pipeline'
+version: '1.0.0'
+config-version: 2
+
+profile: 'real_estate_pipeline'
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+snapshot-paths: ["snapshots"]
+analysis-paths: ["analyses"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  real_estate_pipeline:
+    silver:
+      +materialized: table
+      +schema: silver
+    gold:
+      +materialized: table
+      +schema: gold
