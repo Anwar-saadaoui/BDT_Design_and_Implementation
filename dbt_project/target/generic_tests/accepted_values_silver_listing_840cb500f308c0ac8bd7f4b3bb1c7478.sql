@@ -1,1 +1,0 @@
-{{ test_accepted_values(column_name="condition", model=get_where_subquery(ref('silver_listings')), values=["new","good","renovated","old","unknown"]) }}

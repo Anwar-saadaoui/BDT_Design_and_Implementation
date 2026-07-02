@@ -1,1 +1,0 @@
-{{ test_unique(column_name="listing_id", model=get_where_subquery(ref('fact_listings'))) }}

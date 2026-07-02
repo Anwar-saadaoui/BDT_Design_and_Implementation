@@ -1,1 +1,0 @@
-{{ test_relationships(column_name="property_key", field="property_key", model=get_where_subquery(ref('fact_listings')), to=ref('dim_property')) }}

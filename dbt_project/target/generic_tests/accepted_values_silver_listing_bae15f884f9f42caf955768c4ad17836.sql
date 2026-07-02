@@ -1,1 +1,0 @@
-{{ test_accepted_values(column_name="property_type", model=get_where_subquery(ref('silver_listings')), values=["apartment","house","villa","studio","duplex","penthouse","unknown"]) }}

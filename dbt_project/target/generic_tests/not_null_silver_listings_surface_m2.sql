@@ -1,1 +1,0 @@
-{{ test_not_null(column_name="surface_m2", model=get_where_subquery(ref('silver_listings'))) }}
