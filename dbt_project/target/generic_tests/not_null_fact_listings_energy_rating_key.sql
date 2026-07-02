@@ -1,0 +1,1 @@
+{{ test_not_null(column_name="energy_rating_key", model=get_where_subquery(ref('fact_listings'))) }}

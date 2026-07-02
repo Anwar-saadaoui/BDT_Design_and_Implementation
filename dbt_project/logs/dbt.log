@@ -900,3 +900,370 @@ select * from final
 Finished 'run' successfully for target 'dev' [9.7s]
 Processed: 1 model
 Summary: 1 total | 1 success
+==================== 2026-07-02T09:42:27.719455Z | 019f2235-51c7-73f3-8fda-353faeaa056e ====================
+09:42:27.743640 [info ]: dbt-core 2.0.0-alpha.3
+09:42:27.794559 [info ]: Started loading project
+09:42:27.944897 [info ]: Loading profiles.yml
+09:42:28.228422 [info ]: Loading packages.yml
+09:42:28.249518 [debug]:    Started loading packages
+09:42:29.014802 [debug]:     Loaded [  0.77s] packages
+09:42:29.048555 [info ]: Finished loading project [  1.25s]
+09:42:29.076527 [info ]: Started parsing
+09:42:30.141500 [debug]: Finished parsing models/gold/schema.yml [  0.02s]
+09:42:30.149615 [debug]: Finished parsing models/silver/schema.yml [  0.01s]
+09:42:30.156669 [debug]: Finished parsing models/silver/sources.yml [  0.01s]
+09:42:30.228016 [debug]: Finished parsing models/gold/dim_energy_rating.sql [  0.02s]
+09:42:30.235468 [debug]: Finished parsing models/gold/dim_location.sql [  0.01s]
+09:42:30.245068 [debug]: Finished parsing models/gold/dim_property.sql [  0.01s]
+09:42:30.253318 [debug]: Finished parsing models/gold/dim_time.sql [  0.01s]
+09:42:30.261034 [debug]: Finished parsing models/gold/fact_listings.sql [  0.01s]
+09:42:30.268986 [debug]: Finished parsing models/silver/silver_listings.sql [  0.01s]
+09:42:30.516271 [debug]: Finished parsing target/generic_tests/unique_dim_energy_rating_energy_rating_key.sql [  0.01s]
+09:42:30.524117 [debug]: Finished parsing target/generic_tests/not_null_dim_energy_rating_energy_rating_key.sql [  0.01s]
+09:42:30.531790 [debug]: Finished parsing target/generic_tests/unique_dim_location_location_key.sql [  0.01s]
+09:42:30.540447 [debug]: Finished parsing target/generic_tests/not_null_dim_location_location_key.sql [  0.01s]
+09:42:30.548720 [debug]: Finished parsing target/generic_tests/unique_dim_property_property_key.sql [  0.01s]
+09:42:30.557348 [debug]: Finished parsing target/generic_tests/not_null_dim_property_property_key.sql [  0.01s]
+09:42:30.564526 [debug]: Finished parsing target/generic_tests/unique_dim_time_time_key.sql [  0.01s]
+09:42:30.572531 [debug]: Finished parsing target/generic_tests/not_null_dim_time_time_key.sql [  0.01s]
+09:42:30.580710 [debug]: Finished parsing target/generic_tests/not_null_fact_listings_energy_rating_key.sql [  0.01s]
+09:42:30.587990 [debug]: Finished parsing target/generic_tests/relationships_fact_listings_dd9b94807022b245c13417df89c905fd.sql [  0.01s]
+09:42:30.595168 [debug]: Finished parsing target/generic_tests/unique_fact_listings_listing_id.sql [  0.01s]
+09:42:30.602075 [debug]: Finished parsing target/generic_tests/not_null_fact_listings_listing_id.sql [  0.01s]
+09:42:30.610293 [debug]: Finished parsing target/generic_tests/not_null_fact_listings_location_key.sql [  0.01s]
+09:42:30.617547 [debug]: Finished parsing target/generic_tests/relationships_fact_listings_920cbf927d42156ff192af1e75cd8df8.sql [  0.01s]
+09:42:30.626828 [debug]: Finished parsing target/generic_tests/not_null_fact_listings_price.sql [  0.01s]
+09:42:30.633982 [debug]: Finished parsing target/generic_tests/not_null_fact_listings_property_key.sql [  0.01s]
+09:42:30.642703 [debug]: Finished parsing target/generic_tests/relationships_fact_listings_d7cc9ed12887cfa1ba62b0e7eacf22ab.sql [  0.01s]
+09:42:30.651017 [debug]: Finished parsing target/generic_tests/accepted_values_silver_listing_840cb500f308c0ac8bd7f4b3bb1c7478.sql [  0.01s]
+09:42:30.659339 [debug]: Finished parsing target/generic_tests/accepted_values_silver_listing_058b387b4e21033c861abb077b3d10a6.sql [  0.01s]
+09:42:30.666671 [debug]: Finished parsing target/generic_tests/unique_silver_listings_listing_id.sql [  0.01s]
+09:42:30.675212 [debug]: Finished parsing target/generic_tests/not_null_silver_listings_listing_id.sql [  0.01s]
+09:42:30.682840 [debug]: Finished parsing target/generic_tests/not_null_silver_listings_price.sql [  0.01s]
+09:42:30.692836 [debug]: Finished parsing target/generic_tests/accepted_values_silver_listing_bae15f884f9f42caf955768c4ad17836.sql [  0.01s]
+09:42:30.700393 [debug]: Finished parsing target/generic_tests/not_null_silver_listings_surface_m2.sql [  0.01s]
+09:42:30.725985 [info ]: Finished parsing [  1.65s]
+09:42:30.741754 [info ]: Started scheduling
+09:42:30.748319 [info ]: Finished scheduling [  0.01s]
+09:42:30.760668 [debug]: Initializing schema store with entry: Frontier(CanonicalFqn { catalog: "REAL_ESTATE_DB", schema: "SILVER", table: "SILVER_LISTINGS" }) and interval: None
+09:42:31.304539 [info ]: Started building task graph
+09:42:31.310803 [info ]: Finished building task graph [  0.01s]
+09:42:36.385516 [debug]: Query executed on node unknown:
+show terse schemas in database REAL_ESTATE_DB
+    limit 10000
+/* {"app": "dbt", "connection_name": "", "dbt_version": "2.0.0", "profile_name": "real_estate_pipeline", "target_name": "dev"} */
+09:42:36.506525 [debug]: Query executed on node unknown:
+create schema if not exists REAL_ESTATE_DB.gold
+/* {"app": "dbt", "connection_name": "", "dbt_version": "2.0.0", "profile_name": "real_estate_pipeline", "target_name": "dev"} */
+09:42:36.507241 [info ]: Started rendering (5 nodes)
+09:42:36.507706 [info ]: Started model gold.dim_time
+09:42:36.507749 [debug]: Started rendering model gold.dim_time
+09:42:36.507859 [info ]: Started model gold.dim_property
+09:42:36.507878 [debug]: Started rendering model gold.dim_property
+09:42:36.507915 [info ]: Started model gold.dim_location
+09:42:36.507935 [debug]: Started rendering model gold.dim_location
+09:42:36.507967 [info ]: Started model gold.dim_energy_rating
+09:42:36.507982 [debug]: Started rendering model gold.dim_energy_rating
+09:42:36.577127 [debug]: Compiled SQL for node model.real_estate_pipeline.dim_energy_rating at target/compiled/real_estate_pipeline/models/gold/dim_energy_rating.sql
+09:42:36.578202 [debug]: Finished rendering [  0.07s] model gold.dim_energy_rating [success]
+09:42:36.579615 [info ]: Started running (5 nodes)
+09:42:36.579831 [info ]: Started running model gold.dim_energy_rating
+09:42:36.582511 [debug]: Compiled SQL for node model.real_estate_pipeline.dim_time at target/compiled/real_estate_pipeline/models/gold/dim_time.sql
+09:42:36.583246 [debug]: Finished rendering [  0.08s] model gold.dim_time [success]
+09:42:36.583540 [info ]: Started running model gold.dim_time
+09:42:36.588445 [debug]: Compiled SQL for node model.real_estate_pipeline.dim_location at target/compiled/real_estate_pipeline/models/gold/dim_location.sql
+09:42:36.588990 [debug]: Finished rendering [  0.08s] model gold.dim_location [success]
+09:42:36.589177 [info ]: Started running model gold.dim_location
+09:42:36.595625 [debug]: Compiled SQL for node model.real_estate_pipeline.dim_property at target/compiled/real_estate_pipeline/models/gold/dim_property.sql
+09:42:36.596076 [debug]: Finished rendering [  0.09s] model gold.dim_property [success]
+09:42:36.596325 [info ]: Started running model gold.dim_property
+09:42:36.700919 [debug]: Query executed on node model.real_estate_pipeline.dim_time:
+SHOW OBJECTS IN SCHEMA "REAL_ESTATE_DB"."GOLD" LIMIT 10000
+09:42:36.706942 [debug]: Writing runtime sql for node "model.real_estate_pipeline.dim_time"
+09:42:37.059485 [debug]: Query executed on node model.real_estate_pipeline.dim_energy_rating:
+SHOW OBJECTS IN SCHEMA "REAL_ESTATE_DB"."GOLD" LIMIT 10000
+09:42:37.064112 [debug]: Writing runtime sql for node "model.real_estate_pipeline.dim_energy_rating"
+09:42:37.688688 [debug]: Query executed on node model.real_estate_pipeline.dim_property:
+SHOW OBJECTS IN SCHEMA "REAL_ESTATE_DB"."GOLD" LIMIT 10000
+09:42:37.692831 [debug]: Query executed on node model.real_estate_pipeline.dim_location:
+SHOW OBJECTS IN SCHEMA "REAL_ESTATE_DB"."GOLD" LIMIT 10000
+09:42:37.694229 [debug]: Writing runtime sql for node "model.real_estate_pipeline.dim_property"
+09:42:37.697510 [debug]: Writing runtime sql for node "model.real_estate_pipeline.dim_location"
+09:42:37.881436 [debug]: Query executed on node model.real_estate_pipeline.dim_energy_rating:
+create or replace transient  table REAL_ESTATE_DB.gold.dim_energy_rating
+    
+    
+    
+    
+    as (
+
+with source as (
+
+    select distinct
+        energy_rating
+
+    from REAL_ESTATE_DB.silver.silver_listings
+
+),
+
+final as (
+
+    select
+        md5(cast(coalesce(cast(energy_rating as TEXT), '_dbt_utils_surrogate_key_null_') as TEXT)) as energy_rating_key,
+        coalesce(energy_rating, 'Unknown')                        as energy_rating,
+
+        -- helpful derived flag for BI filtering
+        case
+            when energy_rating in ('A', 'B') then 'Efficient'
+            when energy_rating in ('C', 'D') then 'Average'
+            when energy_rating in ('E', 'F', 'G') then 'Inefficient'
+            else 'Unknown'
+        end                                                        as efficiency_category
+
+    from source
+
+)
+
+select * from final
+    )
+
+/* {"app": "dbt", "dbt_version": "2.0.0", "node_id": "model.real_estate_pipeline.dim_energy_rating", "profile_name": "real_estate_pipeline", "target_name": "dev"} */
+09:42:37.885271 [info ]: Finished running [  1.31s] model gold.dim_energy_rating [success]
+09:42:37.885504 [info ]:  Succeeded [  1.38s] model gold.dim_energy_rating (table)
+09:42:37.956664 [debug]: Query executed on node model.real_estate_pipeline.dim_time:
+create or replace transient  table REAL_ESTATE_DB.gold.dim_time
+    
+    
+    
+    
+    as (
+
+with source as (
+
+    select distinct
+        listing_date
+
+    from REAL_ESTATE_DB.silver.silver_listings
+    where listing_date is not null
+
+),
+
+final as (
+
+    select
+        md5(cast(coalesce(cast(listing_date as TEXT), '_dbt_utils_surrogate_key_null_') as TEXT))  as time_key,
+        listing_date,
+        year(listing_date)                                        as year,
+        quarter(listing_date)                                     as quarter,
+        month(listing_date)                                       as month,
+        monthname(listing_date)                                   as month_name,
+        day(listing_date)                                         as day,
+        dayname(listing_date)                                     as day_name,
+        weekofyear(listing_date)                                  as week_of_year
+
+    from source
+
+)
+
+select * from final
+    )
+
+/* {"app": "dbt", "dbt_version": "2.0.0", "node_id": "model.real_estate_pipeline.dim_time", "profile_name": "real_estate_pipeline", "target_name": "dev"} */
+09:42:37.959540 [info ]: Finished running [  1.38s] model gold.dim_time [success]
+09:42:37.959819 [info ]:  Succeeded [  1.45s] model gold.dim_time (table)
+09:42:38.218106 [debug]: Query executed on node model.real_estate_pipeline.dim_property:
+create or replace transient  table REAL_ESTATE_DB.gold.dim_property
+    
+    
+    
+    
+    as (
+
+with source as (
+
+    select distinct
+        property_type,
+        condition,
+        heating_type,
+        has_parking
+
+    from REAL_ESTATE_DB.silver.silver_listings
+
+),
+
+final as (
+
+    select
+        md5(cast(coalesce(cast(property_type as TEXT), '_dbt_utils_surrogate_key_null_') || '-' || coalesce(cast(condition as TEXT), '_dbt_utils_surrogate_key_null_') || '-' || coalesce(cast(heating_type as TEXT), '_dbt_utils_surrogate_key_null_') || '-' || coalesce(cast(has_parking as TEXT), '_dbt_utils_surrogate_key_null_') as TEXT)) as property_key,
+        property_type,
+        condition,
+        heating_type,
+        has_parking
+
+    from source
+
+)
+
+select * from final
+    )
+
+/* {"app": "dbt", "dbt_version": "2.0.0", "node_id": "model.real_estate_pipeline.dim_property", "profile_name": "real_estate_pipeline", "target_name": "dev"} */
+09:42:38.220706 [info ]: Finished running [  1.62s] model gold.dim_property [success]
+09:42:38.220998 [info ]:  Succeeded [  1.71s] model gold.dim_property (table)
+09:42:38.331514 [debug]: Query executed on node model.real_estate_pipeline.dim_location:
+create or replace transient  table REAL_ESTATE_DB.gold.dim_location
+    
+    
+    
+    
+    as (
+
+with source as (
+
+    select distinct
+        country,
+        city,
+        neighborhood
+
+    from REAL_ESTATE_DB.silver.silver_listings
+
+),
+
+final as (
+
+    select
+        md5(cast(coalesce(cast(country as TEXT), '_dbt_utils_surrogate_key_null_') || '-' || coalesce(cast(city as TEXT), '_dbt_utils_surrogate_key_null_') || '-' || coalesce(cast(neighborhood as TEXT), '_dbt_utils_surrogate_key_null_') as TEXT)) as location_key,
+        country,
+        city,
+        neighborhood
+
+    from source
+
+)
+
+select * from final
+    )
+
+/* {"app": "dbt", "dbt_version": "2.0.0", "node_id": "model.real_estate_pipeline.dim_location", "profile_name": "real_estate_pipeline", "target_name": "dev"} */
+09:42:38.334076 [info ]: Finished running [  1.74s] model gold.dim_location [success]
+09:42:38.334225 [info ]:  Succeeded [  1.82s] model gold.dim_location (table)
+09:42:38.334453 [info ]: Started model gold.fact_listings
+09:42:38.334489 [debug]: Started rendering model gold.fact_listings
+09:42:38.379885 [debug]: Compiled SQL for node model.real_estate_pipeline.fact_listings at target/compiled/real_estate_pipeline/models/gold/fact_listings.sql
+09:42:38.380367 [debug]: Finished rendering [  0.05s] model gold.fact_listings [success]
+09:42:38.380527 [info ]: Finished rendering [  1.87s] (5 nodes, 0 skipped, 0 errors)
+09:42:38.380813 [info ]: Started running model gold.fact_listings
+09:42:38.393952 [debug]: Writing runtime sql for node "model.real_estate_pipeline.fact_listings"
+09:42:39.594987 [debug]: Query executed on node model.real_estate_pipeline.fact_listings:
+create or replace transient  table REAL_ESTATE_DB.gold.fact_listings
+    
+    
+    
+    
+    as (
+
+with listings as (
+
+    select * from REAL_ESTATE_DB.silver.silver_listings
+
+),
+
+dim_property as (
+    select * from REAL_ESTATE_DB.gold.dim_property
+),
+
+dim_location as (
+    select * from REAL_ESTATE_DB.gold.dim_location
+),
+
+dim_time as (
+    select * from REAL_ESTATE_DB.gold.dim_time
+),
+
+dim_energy_rating as (
+    select * from REAL_ESTATE_DB.gold.dim_energy_rating
+),
+
+final as (
+
+    select
+        l.listing_id,
+
+        -- foreign keys
+        p.property_key,
+        loc.location_key,
+        t.time_key,
+        e.energy_rating_key,
+
+        -- measures
+        l.surface_m2,
+        l.num_rooms,
+        l.num_bathrooms,
+        l.floor,
+        l.year_built,
+        l.price,
+        l.price_per_m2,
+        l.property_age,
+
+        l.load_timestamp
+
+    from listings l
+
+    left join dim_property p
+        on  coalesce(l.property_type, '')  = coalesce(p.property_type, '')
+        and coalesce(l.condition, '')      = coalesce(p.condition, '')
+        and coalesce(l.heating_type, '')   = coalesce(p.heating_type, '')
+        and coalesce(l.has_parking::string, '') = coalesce(p.has_parking::string, '')
+
+    left join dim_location loc
+        on  coalesce(l.country, '')      = coalesce(loc.country, '')
+        and coalesce(l.city, '')         = coalesce(loc.city, '')
+        and coalesce(l.neighborhood, '') = coalesce(loc.neighborhood, '')
+
+    left join dim_time t
+        on l.listing_date = t.listing_date
+
+    left join dim_energy_rating e
+        on coalesce(l.energy_rating, 'Unknown') = e.energy_rating
+
+)
+
+select * from final
+    )
+
+/* {"app": "dbt", "dbt_version": "2.0.0", "node_id": "model.real_estate_pipeline.fact_listings", "profile_name": "real_estate_pipeline", "target_name": "dev"} */
+09:42:39.597679 [info ]: Finished running [  1.22s] model gold.fact_listings [success]
+09:42:39.597881 [info ]: Finished running [  3.02s] (5 nodes, 0 skipped, 0 errors)
+09:42:39.597983 [info ]:  Succeeded [  1.26s] model gold.fact_listings (table)
+09:42:40.492632 [info ]: 
+==================== Execution Summary =====================
+Finished 'run' successfully for target 'dev' [12.8s]
+Processed: 5 models
+Summary: 5 total | 5 success
+==================== 2026-07-02T10:22:17.033980Z | 019f2259-c749-7351-81a9-b64fccf48de4 ====================
+10:22:17.043550 [info ]: dbt-core 2.0.0-alpha.3
+10:22:17.058095 [info ]: Started loading project
+10:22:17.153116 [info ]: Loading profiles.yml
+10:22:17.209585 [info ]: Finished loading project [  0.15s]
+10:22:17.210955 [info ]: Started debugging
+10:22:17.211132 [info ]: Debugging profile: dev
+10:22:17.211211 [info ]: Debugging dbt version: 2.0.0-alpha.3
+10:22:17.211230 [info ]: Debugging platform: linux x86_64 (unix)
+10:22:17.214763 [info ]: Debugging adapter type: snowflake (remote)
+10:22:17.267124 [info ]: Debugging dependencies:
+  git: OK
+10:22:17.278702 [info ]: Debugging connection:
+  "account": "FNKTRGQ-ND67729",
+  "user": "ANWAR",
+  "database": "REAL_ESTATE_DB",
+  "warehouse": "COMPUTE_WH",
+  "schema": "PUBLIC",
+  "role": "ACCOUNTADMIN"
+10:22:25.463098 [debug]: Query executed on node unknown:
+select 1 as id
+10:22:25.468392 [info ]: Debugging connection test: OK
+10:22:25.468646 [info ]: Debugged All checks passed!
+10:22:25.468713 [info ]: Finished debugging [  8.26s]
+10:22:25.574790 [info ]: 
+==================== Execution Summary =====================
+Finished 'debug' successfully for target 'dev' [8.5s]

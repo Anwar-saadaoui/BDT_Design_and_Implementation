@@ -1,0 +1,1 @@
+{{ test_relationships(column_name="energy_rating_key", field="energy_rating_key", model=get_where_subquery(ref('fact_listings')), to=ref('dim_energy_rating')) }}
