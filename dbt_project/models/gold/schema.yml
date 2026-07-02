@@ -1,0 +1,70 @@
+version: 2
+
+models:
+  - name: dim_property
+    description: "Property characteristics dimension"
+    columns:
+      - name: property_key
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_location
+    description: "Geographic location dimension"
+    columns:
+      - name: location_key
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_time
+    description: "Date dimension based on listing_date"
+    columns:
+      - name: time_key
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_energy_rating
+    description: "Energy efficiency rating dimension"
+    columns:
+      - name: energy_rating_key
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_listings
+    description: "Fact table - one row per real estate listing"
+    columns:
+      - name: listing_id
+        tests:
+          - unique
+          - not_null
+
+      - name: property_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_property')
+                field: property_key
+
+      - name: location_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_location')
+                field: location_key
+
+      - name: energy_rating_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_energy_rating')
+                field: energy_rating_key
+
+      - name: price
+        tests:
+          - not_null
