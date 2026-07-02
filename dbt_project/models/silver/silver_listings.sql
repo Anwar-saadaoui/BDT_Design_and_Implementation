@@ -47,7 +47,10 @@ cleaned as (
             try_to_date(listing_date, 'DD/MM/YYYY'),
             try_to_date(listing_date, 'MM/DD/YYYY'),
             try_to_date(listing_date, 'DD-MM-YYYY'),
-            try_to_date(listing_date, 'YYYY/MM/DD')
+            try_to_date(listing_date, 'MM-DD-YYYY'),
+            try_to_date(listing_date, 'YYYY/MM/DD'),
+            try_to_date(listing_date, 'DD.MM.YYYY'),
+            try_to_date(listing_date, 'MM.DD.YYYY')
         )                                                      as listing_date,
 
         case

@@ -1,30 +1,30 @@
--- created_at: 2026-07-01T23:34:29.470523269+00:00
--- finished_at: 2026-07-01T23:34:29.634796229+00:00
--- elapsed: 164ms
+-- created_at: 2026-07-02T08:23:00.724723542+00:00
+-- finished_at: 2026-07-02T08:23:00.858819478+00:00
+-- elapsed: 134ms
 -- outcome: success
 -- dialect: snowflake
 -- node_id: not available
--- query_id: 01c56d66-0001-e26e-0000-0002a02eb321
+-- query_id: 01c56f77-0001-e21f-0002-a02e00017062
 -- desc: execute adapter call
 show terse schemas in database REAL_ESTATE_DB
     limit 10000
 /* {"app": "dbt", "connection_name": "", "dbt_version": "2.0.0", "profile_name": "real_estate_pipeline", "target_name": "dev"} */;
--- created_at: 2026-07-01T23:34:29.737738915+00:00
--- finished_at: 2026-07-01T23:34:29.855311506+00:00
--- elapsed: 117ms
+-- created_at: 2026-07-02T08:23:00.956320673+00:00
+-- finished_at: 2026-07-02T08:23:01.089930327+00:00
+-- elapsed: 133ms
 -- outcome: success
 -- dialect: snowflake
 -- node_id: model.real_estate_pipeline.silver_listings
--- query_id: 01c56d66-0001-e26e-0000-0002a02eb325
+-- query_id: 01c56f77-0001-e32c-0002-a02e00011202
 -- desc: get_relation > list_relations call
 SHOW OBJECTS IN SCHEMA "REAL_ESTATE_DB"."SILVER" LIMIT 10000;
--- created_at: 2026-07-01T23:34:29.885529462+00:00
--- finished_at: 2026-07-01T23:34:31.204724892+00:00
--- elapsed: 1.3s
+-- created_at: 2026-07-02T08:23:01.120304400+00:00
+-- finished_at: 2026-07-02T08:23:01.893539548+00:00
+-- elapsed: 773ms
 -- outcome: success
 -- dialect: snowflake
 -- node_id: model.real_estate_pipeline.silver_listings
--- query_id: 01c56d66-0001-e32c-0002-a02e00011036
+-- query_id: 01c56f77-0001-e21f-0002-a02e00017066
 -- desc: execute adapter call
 create or replace transient  table REAL_ESTATE_DB.silver.silver_listings
     
@@ -90,7 +90,10 @@ cleaned as (
             try_to_date(listing_date, 'DD/MM/YYYY'),
             try_to_date(listing_date, 'MM/DD/YYYY'),
             try_to_date(listing_date, 'DD-MM-YYYY'),
-            try_to_date(listing_date, 'YYYY/MM/DD')
+            try_to_date(listing_date, 'MM-DD-YYYY'),
+            try_to_date(listing_date, 'YYYY/MM/DD'),
+            try_to_date(listing_date, 'DD.MM.YYYY'),
+            try_to_date(listing_date, 'MM.DD.YYYY')
         )                                                      as listing_date,
 
         case

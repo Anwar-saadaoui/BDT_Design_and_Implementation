@@ -107,26 +107,26 @@
     {
       "macro_span": {
         "start": {
-          "line": 70,
+          "line": 73,
           "col": 9,
-          "index": 2603
+          "index": 2765
         },
         "stop": {
-          "line": 70,
+          "line": 73,
           "col": 38,
-          "index": 2632
+          "index": 2794
         }
       },
       "expanded_span": {
         "start": {
-          "line": 80,
+          "line": 83,
           "col": 9,
-          "index": 3207
+          "index": 3369
         },
         "stop": {
-          "line": 86,
+          "line": 89,
           "col": 1,
-          "index": 3410
+          "index": 3572
         }
       }
     }

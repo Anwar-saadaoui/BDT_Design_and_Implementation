@@ -502,3 +502,401 @@ select * from final
 Finished 'run' successfully for target 'dev' [41.0s]
 Processed: 1 model
 Summary: 1 total | 1 success
+==================== 2026-07-02T08:18:42.583961Z | 019f21e8-a49d-70c1-91f5-9fa3d7891c01 ====================
+08:18:42.605430 [info ]: dbt-core 2.0.0-alpha.3
+08:18:42.646696 [info ]: Started loading project
+08:18:42.738433 [info ]: Loading profiles.yml
+08:18:42.923609 [info ]: Loading packages.yml
+08:18:42.941652 [debug]:    Started loading packages
+08:18:43.708535 [debug]:     Loaded [  0.77s] packages
+08:18:43.723743 [info ]: Finished loading project [  1.08s]
+08:18:43.745221 [info ]: Started parsing
+08:18:45.422975 [debug]: Finished parsing models/gold/schema.yml [  0.01s]
+08:18:45.459709 [debug]: Finished parsing models/silver/schema.yml [  0.04s]
+08:18:45.469076 [debug]: Finished parsing models/silver/sources.yml [  0.01s]
+08:18:45.604283 [debug]: Finished parsing models/gold/dim_energy_rating.sql [  0.02s]
+08:18:45.611434 [debug]: Finished parsing models/gold/dim_location.sql [  0.01s]
+08:18:45.619033 [debug]: Finished parsing models/gold/dim_property.sql [  0.01s]
+08:18:45.625580 [debug]: Finished parsing models/gold/dim_time.sql [  0.01s]
+08:18:45.632327 [debug]: Finished parsing models/gold/fact_listings.sql [  0.01s]
+08:18:45.643789 [debug]: Finished parsing models/silver/silver_listings.sql [  0.01s]
+08:18:45.775177 [debug]: Finished parsing target/generic_tests/accepted_values_silver_listing_840cb500f308c0ac8bd7f4b3bb1c7478.sql [  0.01s]
+08:18:45.786807 [debug]: Finished parsing target/generic_tests/accepted_values_silver_listing_058b387b4e21033c861abb077b3d10a6.sql [  0.01s]
+08:18:45.794734 [debug]: Finished parsing target/generic_tests/unique_silver_listings_listing_id.sql [  0.01s]
+08:18:45.802943 [debug]: Finished parsing target/generic_tests/not_null_silver_listings_listing_id.sql [  0.01s]
+08:18:45.808394 [debug]: Finished parsing target/generic_tests/not_null_silver_listings_price.sql [  0.01s]
+08:18:45.814790 [debug]: Finished parsing target/generic_tests/accepted_values_silver_listing_bae15f884f9f42caf955768c4ad17836.sql [  0.01s]
+08:18:45.821079 [debug]: Finished parsing target/generic_tests/not_null_silver_listings_surface_m2.sql [  0.01s]
+08:18:45.850475 [info ]: Finished parsing [  2.11s]
+08:18:45.873762 [info ]: Started scheduling
+08:18:45.880624 [info ]: Finished scheduling [  0.01s]
+08:18:45.898066 [debug]: Initializing schema store with entry: Frontier(CanonicalFqn { catalog: "REAL_ESTATE_DB", schema: "BRONZE", table: "RAW_LISTINGS" }) and interval: None
+08:18:46.483017 [info ]: Started building task graph
+08:18:46.491261 [info ]: Finished building task graph [  0.01s]
+08:18:52.633159 [debug]: Query executed on node unknown:
+show terse schemas in database REAL_ESTATE_DB
+    limit 10000
+/* {"app": "dbt", "connection_name": "", "dbt_version": "2.0.0", "profile_name": "real_estate_pipeline", "target_name": "dev"} */
+08:18:52.639612 [info ]: Started rendering (1 nodes)
+08:18:52.640171 [info ]: Started model silver.silver_listings
+08:18:52.640235 [debug]: Started rendering model silver.silver_listings
+08:18:52.686263 [debug]: Compiled SQL for node model.real_estate_pipeline.silver_listings at target/compiled/real_estate_pipeline/models/silver/silver_listings.sql
+08:18:52.686719 [debug]: Finished rendering [  0.05s] model silver.silver_listings [success]
+08:18:52.686931 [info ]: Finished rendering [  0.05s] (1 nodes, 0 skipped, 0 errors)
+08:18:52.688012 [info ]: Started running (1 nodes)
+08:18:52.688198 [info ]: Started running model silver.silver_listings
+08:18:52.874500 [debug]: Query executed on node model.real_estate_pipeline.silver_listings:
+SHOW OBJECTS IN SCHEMA "REAL_ESTATE_DB"."SILVER" LIMIT 10000
+08:18:52.881771 [debug]: Writing runtime sql for node "model.real_estate_pipeline.silver_listings"
+08:18:53.052712 [debug]: Query executed on node model.real_estate_pipeline.silver_listings:
+create or replace transient  table REAL_ESTATE_DB.silver.silver_listings
+    
+    
+    
+    
+    as (
+
+with source as (
+
+    select * from REAL_ESTATE_DB.BRONZE.RAW_LISTINGS
+
+),
+
+deduplicated as (
+
+    -- keep only the most recent row per listing_id (in case of duplicates)
+    select *,
+        row_number() over (
+            partition by listing_id
+            order by LOAD_TIMESTAMP desc
+        ) as rn
+    from source
+
+),
+
+cleaned as (
+
+    select
+        listing_id,
+
+        
+    CASE
+        WHEN REGEXP_REPLACE(LOWER(TRIM(property_type)), '[^a-z]', '') LIKE '%apart%' THEN 'apartment'
+        WHEN REGEXP_REPLACE(LOWER(TRIM(property_type)), '[^a-z]', '') LIKE '%hous%'  THEN 'house'
+        WHEN REGEXP_REPLACE(LOWER(TRIM(property_type)), '[^a-z]', '') LIKE '%villa%' THEN 'villa'
+        WHEN REGEXP_REPLACE(LOWER(TRIM(property_type)), '[^a-z]', '') LIKE '%studio%' THEN 'studio'
+        WHEN REGEXP_REPLACE(LOWER(TRIM(property_type)), '[^a-z]', '') LIKE '%duplex%' THEN 'duplex'
+        WHEN REGEXP_REPLACE(LOWER(TRIM(property_type)), '[^a-z]', '') LIKE '%penthouse%' THEN 'penthouse'
+        ELSE 'unknown'
+    END
+          as property_type,
+
+        trim(initcap(country))                               as country,
+        trim(initcap(city))                                  as city,
+        trim(neighborhood)                                   as neighborhood,
+
+        try_cast(surface_m2 as number(10,2))                 as surface_m2,
+        try_cast(num_rooms as int)                            as num_rooms,
+        try_cast(num_bathrooms as int)                        as num_bathrooms,
+        try_cast(floor as int)                                as floor,
+        try_cast(year_built as int)                           as year_built,
+
+        
+    TRY_CAST(
+        REGEXP_REPLACE(price::STRING, '[^0-9.]', '')
+        AS NUMBER(15,2)
+    )
+                            as price,
+        
+        
+        coalesce(
+            try_to_date(listing_date, 'YYYY-MM-DD'),
+            try_to_date(listing_date, 'DD/MM/YYYY'),
+            try_to_date(listing_date, 'MM/DD/YYYY'),
+            try_to_date(listing_date, 'DD-MM-YYYY'),
+            try_to_date(listing_date, 'MM-DD-YYYY'),
+            try_to_date(listing_date, 'YYYY/MM/DD'),
+            try_to_date(listing_date, 'DD.MM.YYYY'),
+            try_to_date(listing_date, 'MM.DD.YYYY')
+        )                                               as listing_date,                                                      as listing_date,
+
+        case
+            when lower(trim(condition)) in ('new', 'neuf')                then 'new'
+            when lower(trim(condition)) in ('good', 'bon')                then 'good'
+            when lower(trim(condition)) in ('renovated', 'renove')        then 'renovated'
+            when lower(trim(condition)) in ('old', 'ancien')              then 'old'
+            else 'unknown'
+        end                                                    as condition,
+
+        case
+            when lower(trim(heating_type)) like '%gas%'         then 'gas'
+            when lower(trim(heating_type)) like '%electric%'    then 'electric'
+            when lower(trim(heating_type)) like '%central%'     then 'central'
+            when lower(trim(heating_type)) like '%none%'
+              or heating_type is null                           then 'none'
+            else 'other'
+        end                                                    as heating_type,
+
+        
+    CASE
+        WHEN LOWER(TRIM(parking)) IN ('yes', 'y', 'true', '1', 'oui') THEN TRUE
+        WHEN LOWER(TRIM(parking)) IN ('no', 'n', 'false', '0', 'non') THEN FALSE
+        ELSE NULL
+    END
+                          as has_parking,
+
+        case
+            when upper(trim(energy_rating)) in ('A','B','C','D','E','F','G')
+                then upper(trim(energy_rating))
+            else null
+        end                                                    as energy_rating,
+
+        try_cast(LOAD_TIMESTAMP::string as timestamp_ntz)      as load_timestamp
+
+    from deduplicated
+    where rn = 1
+
+),
+
+final as (
+
+    select
+        *,
+
+        -- derived column: price per m2
+        case
+            when surface_m2 > 0 then round(price / surface_m2, 2)
+            else null
+        end                                                    as price_per_m2,
+
+        -- derived column: property age
+        case
+            when year_built is not null
+                then year(current_date()) - year_built
+            else null
+        end                                                    as property_age
+
+    from cleaned
+
+    where
+        -- outlier filtering: unrealistic prices / impossible surfaces
+        price between 1000 and 50000000
+        and surface_m2 between 5 and 2000
+        and (year_built is null or year_built between 1800 and year(current_date()))
+
+)
+
+select * from final
+    )
+
+/* {"app": "dbt", "dbt_version": "2.0.0", "node_id": "model.real_estate_pipeline.silver_listings", "profile_name": "real_estate_pipeline", "target_name": "dev"} */
+08:18:54.058191 [error]: [DbSyntaxInvalid (dbt1302)]: Database Error in model silver_listings (target/run/real_estate_pipeline/models/silver/silver_listings.sql)
+  [Snowflake] 001003 (42000): SQL compilation error:
+  syntax error line 70 at position 126 unexpected 'as'.
+  syntax error line 73 at position 12 unexpected 'when'.
+  syntax error line 73 at position 23 unexpected 'trim'.
+  syntax error line 73 at position 40 unexpected 'in'.
+  (in run/real_estate_pipeline/models/silver/silver_listings.sql:1:14)
+08:18:54.059459 [info ]: Finished running [  1.37s] model silver.silver_listings [error]
+08:18:54.059735 [info ]: Finished running [  1.37s] (1 nodes, 0 skipped, 1 errors)
+08:18:54.059910 [info ]:     Failed [  1.42s] model silver.silver_listings (table)
+08:18:54.441925 [info ]: 
+==================== Execution Summary =====================
+Finished 'run' with 1 error for target 'dev' [11.9s]
+Processed: 1 model
+Summary: 1 total | 1 error
+==================== 2026-07-02T08:22:52.590484Z | 019f21ec-754d-75c1-81e1-ff3733aebf20 ====================
+08:22:52.599111 [info ]: dbt-core 2.0.0-alpha.3
+08:22:52.617925 [info ]: Started loading project
+08:22:52.690435 [info ]: Loading profiles.yml
+08:22:52.824455 [info ]: Loading packages.yml
+08:22:52.837831 [debug]:    Started loading packages
+08:22:53.565266 [debug]:     Loaded [  0.73s] packages
+08:22:53.577763 [info ]: Finished loading project [  0.96s]
+08:22:53.594675 [info ]: Started parsing
+08:22:54.375211 [debug]: Finished parsing models/gold/schema.yml [  0.01s]
+08:22:54.399805 [debug]: Finished parsing models/silver/schema.yml [  0.02s]
+08:22:54.409998 [debug]: Finished parsing models/silver/sources.yml [  0.01s]
+08:22:54.481190 [debug]: Finished parsing models/gold/dim_energy_rating.sql [  0.01s]
+08:22:54.488369 [debug]: Finished parsing models/gold/dim_location.sql [  0.01s]
+08:22:54.495108 [debug]: Finished parsing models/gold/dim_property.sql [  0.01s]
+08:22:54.502956 [debug]: Finished parsing models/gold/dim_time.sql [  0.01s]
+08:22:54.510146 [debug]: Finished parsing models/gold/fact_listings.sql [  0.01s]
+08:22:54.521808 [debug]: Finished parsing models/silver/silver_listings.sql [  0.01s]
+08:22:54.648876 [debug]: Finished parsing target/generic_tests/accepted_values_silver_listing_840cb500f308c0ac8bd7f4b3bb1c7478.sql [  0.01s]
+08:22:54.658992 [debug]: Finished parsing target/generic_tests/accepted_values_silver_listing_058b387b4e21033c861abb077b3d10a6.sql [  0.01s]
+08:22:54.667473 [debug]: Finished parsing target/generic_tests/unique_silver_listings_listing_id.sql [  0.01s]
+08:22:54.676174 [debug]: Finished parsing target/generic_tests/not_null_silver_listings_listing_id.sql [  0.01s]
+08:22:54.685259 [debug]: Finished parsing target/generic_tests/not_null_silver_listings_price.sql [  0.01s]
+08:22:54.695709 [debug]: Finished parsing target/generic_tests/accepted_values_silver_listing_bae15f884f9f42caf955768c4ad17836.sql [  0.01s]
+08:22:54.704606 [debug]: Finished parsing target/generic_tests/not_null_silver_listings_surface_m2.sql [  0.01s]
+08:22:54.722788 [info ]: Finished parsing [  1.13s]
+08:22:54.740685 [info ]: Started scheduling
+08:22:54.747056 [info ]: Finished scheduling [  0.01s]
+08:22:54.761999 [debug]: Initializing schema store with entry: Frontier(CanonicalFqn { catalog: "REAL_ESTATE_DB", schema: "BRONZE", table: "RAW_LISTINGS" }) and interval: None
+08:22:55.408071 [info ]: Started building task graph
+08:22:55.415706 [info ]: Finished building task graph [  0.01s]
+08:23:00.858819 [debug]: Query executed on node unknown:
+show terse schemas in database REAL_ESTATE_DB
+    limit 10000
+/* {"app": "dbt", "connection_name": "", "dbt_version": "2.0.0", "profile_name": "real_estate_pipeline", "target_name": "dev"} */
+08:23:00.866149 [info ]: Started rendering (1 nodes)
+08:23:00.866664 [info ]: Started model silver.silver_listings
+08:23:00.866690 [debug]: Started rendering model silver.silver_listings
+08:23:00.917995 [debug]: Compiled SQL for node model.real_estate_pipeline.silver_listings at target/compiled/real_estate_pipeline/models/silver/silver_listings.sql
+08:23:00.918422 [debug]: Finished rendering [  0.05s] model silver.silver_listings [success]
+08:23:00.918567 [info ]: Finished rendering [  0.05s] (1 nodes, 0 skipped, 0 errors)
+08:23:00.919493 [info ]: Started running (1 nodes)
+08:23:00.919599 [info ]: Started running model silver.silver_listings
+08:23:01.089930 [debug]: Query executed on node model.real_estate_pipeline.silver_listings:
+SHOW OBJECTS IN SCHEMA "REAL_ESTATE_DB"."SILVER" LIMIT 10000
+08:23:01.096304 [debug]: Writing runtime sql for node "model.real_estate_pipeline.silver_listings"
+08:23:01.893539 [debug]: Query executed on node model.real_estate_pipeline.silver_listings:
+create or replace transient  table REAL_ESTATE_DB.silver.silver_listings
+    
+    
+    
+    
+    as (
+
+with source as (
+
+    select * from REAL_ESTATE_DB.BRONZE.RAW_LISTINGS
+
+),
+
+deduplicated as (
+
+    -- keep only the most recent row per listing_id (in case of duplicates)
+    select *,
+        row_number() over (
+            partition by listing_id
+            order by LOAD_TIMESTAMP desc
+        ) as rn
+    from source
+
+),
+
+cleaned as (
+
+    select
+        listing_id,
+
+        
+    CASE
+        WHEN REGEXP_REPLACE(LOWER(TRIM(property_type)), '[^a-z]', '') LIKE '%apart%' THEN 'apartment'
+        WHEN REGEXP_REPLACE(LOWER(TRIM(property_type)), '[^a-z]', '') LIKE '%hous%'  THEN 'house'
+        WHEN REGEXP_REPLACE(LOWER(TRIM(property_type)), '[^a-z]', '') LIKE '%villa%' THEN 'villa'
+        WHEN REGEXP_REPLACE(LOWER(TRIM(property_type)), '[^a-z]', '') LIKE '%studio%' THEN 'studio'
+        WHEN REGEXP_REPLACE(LOWER(TRIM(property_type)), '[^a-z]', '') LIKE '%duplex%' THEN 'duplex'
+        WHEN REGEXP_REPLACE(LOWER(TRIM(property_type)), '[^a-z]', '') LIKE '%penthouse%' THEN 'penthouse'
+        ELSE 'unknown'
+    END
+          as property_type,
+
+        trim(initcap(country))                               as country,
+        trim(initcap(city))                                  as city,
+        trim(neighborhood)                                   as neighborhood,
+
+        try_cast(surface_m2 as number(10,2))                 as surface_m2,
+        try_cast(num_rooms as int)                            as num_rooms,
+        try_cast(num_bathrooms as int)                        as num_bathrooms,
+        try_cast(floor as int)                                as floor,
+        try_cast(year_built as int)                           as year_built,
+
+        
+    TRY_CAST(
+        REGEXP_REPLACE(price::STRING, '[^0-9.]', '')
+        AS NUMBER(15,2)
+    )
+                            as price,
+
+        coalesce(
+            try_to_date(listing_date, 'YYYY-MM-DD'),
+            try_to_date(listing_date, 'DD/MM/YYYY'),
+            try_to_date(listing_date, 'MM/DD/YYYY'),
+            try_to_date(listing_date, 'DD-MM-YYYY'),
+            try_to_date(listing_date, 'MM-DD-YYYY'),
+            try_to_date(listing_date, 'YYYY/MM/DD'),
+            try_to_date(listing_date, 'DD.MM.YYYY'),
+            try_to_date(listing_date, 'MM.DD.YYYY')
+        )                                                      as listing_date,
+
+        case
+            when lower(trim(condition)) in ('new', 'neuf')                then 'new'
+            when lower(trim(condition)) in ('good', 'bon')                then 'good'
+            when lower(trim(condition)) in ('renovated', 'renove')        then 'renovated'
+            when lower(trim(condition)) in ('old', 'ancien')              then 'old'
+            else 'unknown'
+        end                                                    as condition,
+
+        case
+            when lower(trim(heating_type)) like '%gas%'         then 'gas'
+            when lower(trim(heating_type)) like '%electric%'    then 'electric'
+            when lower(trim(heating_type)) like '%central%'     then 'central'
+            when lower(trim(heating_type)) like '%none%'
+              or heating_type is null                           then 'none'
+            else 'other'
+        end                                                    as heating_type,
+
+        
+    CASE
+        WHEN LOWER(TRIM(parking)) IN ('yes', 'y', 'true', '1', 'oui') THEN TRUE
+        WHEN LOWER(TRIM(parking)) IN ('no', 'n', 'false', '0', 'non') THEN FALSE
+        ELSE NULL
+    END
+                          as has_parking,
+
+        case
+            when upper(trim(energy_rating)) in ('A','B','C','D','E','F','G')
+                then upper(trim(energy_rating))
+            else null
+        end                                                    as energy_rating,
+
+        try_cast(LOAD_TIMESTAMP::string as timestamp_ntz)      as load_timestamp
+
+    from deduplicated
+    where rn = 1
+
+),
+
+final as (
+
+    select
+        *,
+
+        -- derived column: price per m2
+        case
+            when surface_m2 > 0 then round(price / surface_m2, 2)
+            else null
+        end                                                    as price_per_m2,
+
+        -- derived column: property age
+        case
+            when year_built is not null
+                then year(current_date()) - year_built
+            else null
+        end                                                    as property_age
+
+    from cleaned
+
+    where
+        -- outlier filtering: unrealistic prices / impossible surfaces
+        price between 1000 and 50000000
+        and surface_m2 between 5 and 2000
+        and (year_built is null or year_built between 1800 and year(current_date()))
+
+)
+
+select * from final
+    )
+
+/* {"app": "dbt", "dbt_version": "2.0.0", "node_id": "model.real_estate_pipeline.silver_listings", "profile_name": "real_estate_pipeline", "target_name": "dev"} */
+08:23:01.898718 [info ]: Finished running [  0.98s] model silver.silver_listings [success]
+08:23:01.898903 [info ]: Finished running [  0.98s] (1 nodes, 0 skipped, 0 errors)
+08:23:01.899095 [info ]:  Succeeded [  1.03s] model silver.silver_listings (table)
+08:23:02.338337 [info ]: 
+==================== Execution Summary =====================
+Finished 'run' successfully for target 'dev' [9.7s]
+Processed: 1 model
+Summary: 1 total | 1 success
